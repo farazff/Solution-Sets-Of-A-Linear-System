@@ -1,5 +1,6 @@
-#include <iostream>
-using namespace std;
+#include <stdio.h>
+#include <math.h>
+#include <stdbool.h>
 
 float a[100][100];
 
@@ -94,6 +95,8 @@ int main()
 	printf("Your Matrix is : \n");
 	print();
 	
+	int pivots[col+2]={0};
+	
 	while(pcol<=col)
 	{
 		if( findfirstnonzero()!=0 )
@@ -123,7 +126,7 @@ int main()
 					a[i][j] = a[i][j] - (temp)*a[upperrow][j];
 				}
 			}
-			//print();
+			pivots[pcol]=upperrow;
 			pcol++;
 			upperrow++;
 		}
@@ -141,23 +144,26 @@ int main()
 		return 0;
 	}
 	
-	for(int i=1;i<=row;i++)
+
+
+	for(int j=1;j<=col;j++)
 	{
-		for(int j=1;j<=col;j++)
+		if(pivots[j]!=0)
 		{
-			if(a[i][j]==1)
+			int i = pivots[j];
+			printf("%c = %.2f ",'a'+j-1,a[i][col+1]);
+			for(int k=j+1;k<=col;k++)
 			{
-				printf("%c = %.2f ",'a'+j-1,a[i][col+1]);
-				for(int k=j+1;k<=col;k++)
+				if(a[i][k]!=0)
 				{
-					if(a[i][k]!=0)
-					{
-						printf("+(%.2f%c) ",-a[i][k],'a'+k-1);
-					}
+					printf("+(%.2f%c) ",-a[i][k],'a'+k-1);
 				}
-			}
+			}	
+		}
+		else
+		{
+			printf("%c",'a'+j-1);
 		}
 		printf("\n");
-	}	
-		
+	}
 }
